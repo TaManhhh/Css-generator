@@ -2,13 +2,13 @@
 import "./style.css";
 
 import React, { useEffect, useState } from "react";
-import ListItem from "@/components/ListItem/ListItem";
 import BoxController from "./BoxController";
+import { Templates, initialBoxShadow } from "@/constants/box-shadow-values";
 const BoxShadow = () => {
   const [shadows, setShadows] = useState<any>([]);
   const [colorItem, setColorItem] = useState("#3d9df6");
   const [colorBg, setColorBg] = useState("#ffffff");
-
+  const [data, setData] = useState(initialBoxShadow);
   const handleColorItemChange = (e: any) => {
     setColorItem(e.target.value);
   };
@@ -17,16 +17,20 @@ const BoxShadow = () => {
     setColorBg(e.target.value);
   };
   
+  const handleTemplateChange = (e: any) => {
+    setData(e);
+  };
+  
   return (
     <div className="container mx-auto px-4 max-w-[1100px] w-full">
       <div className="lg:grid lg:grid-cols-2 gap-4">
         <div className="bg-white border border-[#c4cdd5] ">
-          <BoxController setShadows={setShadows}/>
+          <BoxController setShadows={setShadows} data={data} setData={setData}/>
         </div>
         <div className=" flex flex-col gap-4">
           <div className="border border-[#c4cdd5]">
             <div className="p-4 flex justify-between bg-white">
-              <p> Preview</p>
+              <p><b>Preview</b> </p>
               <div className=" flex gap-3">
                 <input
                   type="color"
@@ -58,8 +62,9 @@ const BoxShadow = () => {
               <b>Template</b>
             </p>
             <div className="flex gap-3">
-              <div className="w-[50px] h-[50px] bg-[#79dff1]"></div>
-              <div className="w-[50px] h-[50px] bg-[#79dff1]"></div>
+              {Templates.map((e:any)=>(
+                  <div className="w-[50px] h-[50px] bg-[#79dff1] template" key={e.id} onClick={()=>handleTemplateChange(e.template)}></div>
+              ))}
             </div>
           </div>
         </div>

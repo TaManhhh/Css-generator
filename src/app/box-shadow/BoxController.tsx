@@ -1,31 +1,25 @@
+"use client";
 import ListItem from "@/components/ListItem/ListItem";
-import { initialBoxShadow } from "@/constants/box-shadow-values";
 import { BoxShadow } from "@/types/index.type";
 import React, { useEffect, useState } from "react";
- export function hexToRgba(hex:any, alpha :any) {
-    const hexColor = hex.replace("#", "");
-    const r = parseInt(hexColor.slice(0, 2), 16);
-    const g = parseInt(hexColor.slice(2, 4), 16);
-    const b = parseInt(hexColor.slice(4, 6), 16);
-
-    return `rgba(${r}, ${g}, ${b}, ${alpha / 100})`;
-  }
+export function hexToRgba(hex: string, alpha: number) {
+  const hexColor = hex.replace("#", "");
+  const r = parseInt(hexColor.slice(0, 2), 16);
+  const g = parseInt(hexColor.slice(2, 4), 16);
+  const b = parseInt(hexColor.slice(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha / 100})`;
+}
 export interface updateShadow {
   setShadows: (s: any) => void;
-  //   id:number
+  data:any;
+  setData: React.Dispatch<React.SetStateAction<BoxShadow[]>>
 }
-const BoxController = ({ setShadows }: any) => {
+const BoxController = ({ setShadows, data, setData }: updateShadow) => {
   const [editData, setEditData] = useState<any>(null);
-
-  const [data, setData] = useState(initialBoxShadow);
-
-  const [formData, setFormData] = useState(initialBoxShadow[0]);
-
- 
-  
+  const [formData, setFormData] = useState(data[0]);
   useEffect(() => {
     if (editData) {
-      setFormData((prevFormData) => ({
+      setFormData((prevFormData: any) => ({
         ...prevFormData,
         shiftRight: editData.shiftRight,
         shiftDown: editData.shiftDown,
@@ -40,19 +34,29 @@ const BoxController = ({ setShadows }: any) => {
   }, [editData]);
 
   useEffect(() => {
-    const boxShadowString = data
-      .map((item) => {
-        const { shiftRight, shiftDown, blur, spread, color, opacity, inset } = item;
-        const colorWithOpacity = hexToRgba(color,opacity)
-        const insetString = inset
-          ? `inset ${shiftRight}px ${shiftDown}px ${blur}px ${spread}px `
-          : `${shiftRight}px ${shiftDown}px ${blur}px ${spread}px`;
-        return ` ${insetString} ${colorWithOpacity}`;
-      })
-      .join(",");
+    if (data.length === 1) {
+      const { shiftRight, shiftDown, blur, spread, color, opacity, inset } = formData;
+      const colorWithOpacity = hexToRgba(color, opacity);
+      const insetString = inset
+        ? `inset ${shiftRight}px ${shiftDown}px ${blur}px ${spread}px `
+        : `${shiftRight}px ${shiftDown}px ${blur}px ${spread}px`;
   
-    setShadows(boxShadowString);
-  }, [data,formData]);
+      setShadows(`${insetString} ${colorWithOpacity}`);
+    } else {
+      const boxShadowString = data
+        .map((item: any) => {
+          const { shiftRight, shiftDown, blur, spread, color, opacity, inset } = item;
+          const colorWithOpacity = hexToRgba(color, opacity);
+          const insetString = inset
+            ? `inset ${shiftRight}px ${shiftDown}px ${blur}px ${spread}px `
+            : `${shiftRight}px ${shiftDown}px ${blur}px ${spread}px`;
+          return ` ${insetString} ${colorWithOpacity}`;
+        })
+        .join(",");
+  
+      setShadows(boxShadowString);
+    }
+  }, [data, formData]);
   
 
   const [count, setCount] = useState(1);
@@ -65,7 +69,7 @@ const BoxController = ({ setShadows }: any) => {
 
     setFormData(updatedFormData);
     if (editData) {
-      const updatedData = data.map((item) => {
+      const updatedData = data.map((item: any) => {
         if (item.id === editData.id) {
           return { ...item, ...updatedFormData };
         }
@@ -79,16 +83,14 @@ const BoxController = ({ setShadows }: any) => {
     const newData: BoxShadow = {
       id: count,
       shiftRight: 0,
-      shiftDown: 0,
-      spread: 0,
-      blur: 0,
-      opacity: 0,
-      color: "black",
+      shiftDown: 19,
+      spread: 3,
+      blur: 7,
+      opacity: 20,
+      color: "#00000",
       inset: false,
     };
-    console.log("newData", newData);
-    setData((prevData) => [...prevData, newData]);
-
+    setData((prevData: any) => [...prevData, newData]);
     setCount(count + 1);
   };
 
@@ -218,7 +220,9 @@ const BoxController = ({ setShadows }: any) => {
               shadow={e}
               formData={formData}
               data={data}
+              setData={setData}
               setEditData={setEditData}
+              type="box"
             />
           ))}
         </div>

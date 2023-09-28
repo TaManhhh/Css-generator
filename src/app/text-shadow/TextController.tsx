@@ -1,56 +1,53 @@
+"use client";
 import ListItem from "@/components/ListItem/ListItem";
-import {
-  initialBoxShadow,
-  initialTextShadow,
-} from "@/constants/box-shadow-values";
-import { BoxShadow, TextShadow } from "@/types/index.type";
+import { TextShadow } from "@/types/index.type";
 import React, { useEffect, useState } from "react";
 import "./style.css";
-export interface updateShadow {
+import { hexToRgba } from "../box-shadow/BoxController";
+export interface updateTextShadow {
   setShadows: (s: any) => void;
-  //   id:number
+  data: any;
+  setData: React.Dispatch<React.SetStateAction<TextShadow[]>>;
 }
-const TextController = ({ setShadows }: any) => {
+const TextController = ({ setShadows, data, setData }: any) => {
   const [editData, setEditData] = useState<any>(null);
-
-  const [data, setData] = useState(initialTextShadow);
-
-  const [formData, setFormData] = useState(initialTextShadow[0]);
-  function hexToRgba(hex: any, alpha: any) {
-    const hexColor = hex.replace("#", "");
-    const r = parseInt(hexColor.slice(0, 2), 16);
-    const g = parseInt(hexColor.slice(2, 4), 16);
-    const b = parseInt(hexColor.slice(4, 6), 16);
-
-    return `rgba(${r}, ${g}, ${b}, ${alpha / 100})`;
-  }
-
+  const [formData, setFormData] = useState(data[0]);
   useEffect(() => {
     if (editData) {
-      setFormData((prevFormData) => ({
+      setFormData((prevFormData: any) => ({
         ...prevFormData,
         shiftRight: editData.shiftRight,
         shiftDown: editData.shiftDown,
+        spread: editData.spread,
         blur: editData.blur,
         opacity: editData.opacity,
         color: editData.color,
+        inset: editData.inset,
         id: editData.id,
       }));
     }
   }, [editData]);
 
   useEffect(() => {
-    const boxShadowString = data
-      .map((item) => {
-        const { shiftRight, shiftDown, blur, color, opacity } = item;
-        const colorWithOpacity = hexToRgba(color, opacity);
-        const insetString = `${shiftRight}px ${shiftDown}px ${blur}px`;
-        return ` ${insetString} ${colorWithOpacity}`;
-      })
-      .join(",");
+    if (data.length === 1) {
+      const { shiftRight, shiftDown, blur, color, opacity } = formData;
+      const colorWithOpacity = hexToRgba(color, opacity);
+      const insetString = `${shiftRight}px ${shiftDown}px ${blur}px `;
 
-    setShadows(boxShadowString);
-  }, [data, setShadows]);
+      setShadows(`${insetString} ${colorWithOpacity}`);
+    } else {
+      const boxShadowString = data
+        .map((item: any) => {
+          const { shiftRight, shiftDown, blur, color, opacity } = item;
+          const colorWithOpacity = hexToRgba(color, opacity);
+          const insetString = `${shiftRight}px ${shiftDown}px ${blur}px`;
+          return ` ${insetString} ${colorWithOpacity}`;
+        })
+        .join(",");
+
+      setShadows(boxShadowString);
+    }
+  }, [data, formData]);
 
   const [count, setCount] = useState(1);
   const handleChange = (e: any) => {
@@ -62,7 +59,7 @@ const TextController = ({ setShadows }: any) => {
 
     setFormData(updatedFormData);
     if (editData) {
-      const updatedData = data.map((item) => {
+      const updatedData = data.map((item: any) => {
         if (item.id === editData.id) {
           return { ...item, ...updatedFormData };
         }
@@ -76,13 +73,12 @@ const TextController = ({ setShadows }: any) => {
     const newData: TextShadow = {
       id: count,
       shiftRight: 0,
-      shiftDown: 0,
-      blur: 0,
-      opacity: 0,
-      color: "black",
+      shiftDown: 19,
+      blur: 7,
+      opacity: 20,
+      color: "#00000",
     };
-    setData((prevData) => [...prevData, newData]);
-
+    setData((prevData: any) => [...prevData, newData]);
     setCount(count + 1);
   };
 
@@ -90,7 +86,7 @@ const TextController = ({ setShadows }: any) => {
     <div>
       <div className="p-[20px]">
         <div className="text-[16px] mb-[30px]">
-          <b>Text-Shadow CSS Generator</b>
+          <b>Text shadow CSS Generator</b>
         </div>
         <div className="space-y-4 text-[14px]">
           <div className="flex  flex-col gap-2">
@@ -186,7 +182,9 @@ const TextController = ({ setShadows }: any) => {
               shadow={e}
               formData={formData}
               data={data}
+              setData={setData}
               setEditData={setEditData}
+              type="text"
             />
           ))}
         </div>

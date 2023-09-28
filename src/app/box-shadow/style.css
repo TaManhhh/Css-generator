@@ -40,3 +40,10 @@ input[type="range"]::-webkit-slider-runnable-track:not(
 input[type="range"]::-moz-range-progress {
   background-color: #5c6ac4; /* Màu sắc */
 }
+.template {
+  border: none;
+  cursor:pointer
+}
+.template:hover {
+  border: 1px solid #000;
+}

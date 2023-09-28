@@ -8,6 +8,10 @@ export interface BoxShadow {
   inset: boolean;
   id: any;
 }
+export interface Template {
+  template: BoxShadow[];
+  id: number;
+}
 export interface TextShadow {
   shiftRight: number;
   shiftDown: number;
