@@ -25,28 +25,21 @@ const TextController = ({ setShadows, data, setData }: any) => {
         inset: editData.inset,
         id: editData.id,
       }));
+    } else {
+      setEditData(data[0]);
     }
   }, [editData]);
 
   useEffect(() => {
-    if (data.length === 1) {
-      const { shiftRight, shiftDown, blur, color, opacity } = formData;
-      const colorWithOpacity = hexToRgba(color, opacity);
-      const insetString = `${shiftRight}px ${shiftDown}px ${blur}px `;
-
-      setShadows(`${insetString} ${colorWithOpacity}`);
-    } else {
-      const boxShadowString = data
-        .map((item: any) => {
-          const { shiftRight, shiftDown, blur, color, opacity } = item;
-          const colorWithOpacity = hexToRgba(color, opacity);
-          const insetString = `${shiftRight}px ${shiftDown}px ${blur}px`;
-          return ` ${insetString} ${colorWithOpacity}`;
-        })
-        .join(",");
-
-      setShadows(boxShadowString);
-    }
+    const boxShadowString = data
+      .map((item: any) => {
+        const { shiftRight, shiftDown, blur, color, opacity } = item;
+        const colorWithOpacity = hexToRgba(color, opacity);
+        const insetString = `${shiftRight}px ${shiftDown}px ${blur}px`;
+        return ` ${insetString} ${colorWithOpacity}`;
+      })
+      .join(",");
+    setShadows(boxShadowString);
   }, [data, formData]);
 
   const [count, setCount] = useState(1);
@@ -65,7 +58,6 @@ const TextController = ({ setShadows, data, setData }: any) => {
         }
         return item;
       });
-
       setData(updatedData);
     }
   };
@@ -175,7 +167,7 @@ const TextController = ({ setShadows, data, setData }: any) => {
         >
           Add Layer
         </button>
-        <div className="p-4">
+        <div className="py-4">
           {data.map((e: any) => (
             <ListItem
               key={e.id}

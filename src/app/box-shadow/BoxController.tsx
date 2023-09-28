@@ -15,9 +15,12 @@ export interface updateShadow {
   setData: React.Dispatch<React.SetStateAction<BoxShadow[]>>
 }
 const BoxController = ({ setShadows, data, setData }: updateShadow) => {
-  const [editData, setEditData] = useState<any>(null);
+  const [editData, setEditData] = useState<any>();
   const [formData, setFormData] = useState(data[0]);
-  useEffect(() => {
+
+
+  useEffect(() => { 
+
     if (editData) {
       setFormData((prevFormData: any) => ({
         ...prevFormData,
@@ -30,19 +33,13 @@ const BoxController = ({ setShadows, data, setData }: updateShadow) => {
         inset: editData.inset,
         id: editData.id,
       }));
+    }else{
+      setEditData(data[0])
     }
+   
   }, [editData]);
 
   useEffect(() => {
-    if (data.length === 1) {
-      const { shiftRight, shiftDown, blur, spread, color, opacity, inset } = formData;
-      const colorWithOpacity = hexToRgba(color, opacity);
-      const insetString = inset
-        ? `inset ${shiftRight}px ${shiftDown}px ${blur}px ${spread}px `
-        : `${shiftRight}px ${shiftDown}px ${blur}px ${spread}px`;
-  
-      setShadows(`${insetString} ${colorWithOpacity}`);
-    } else {
       const boxShadowString = data
         .map((item: any) => {
           const { shiftRight, shiftDown, blur, spread, color, opacity, inset } = item;
@@ -55,7 +52,7 @@ const BoxController = ({ setShadows, data, setData }: updateShadow) => {
         .join(",");
   
       setShadows(boxShadowString);
-    }
+    // }
   }, [data, formData]);
   
 
@@ -213,7 +210,7 @@ const BoxController = ({ setShadows, data, setData }: updateShadow) => {
         >
           Add Layer
         </button>
-        <div className="p-4">
+        <div className="py-4">
           {data.map((e: any) => (
             <ListItem
               key={e.id}
@@ -223,6 +220,7 @@ const BoxController = ({ setShadows, data, setData }: updateShadow) => {
               setData={setData}
               setEditData={setEditData}
               type="box"
+            
             />
           ))}
         </div>

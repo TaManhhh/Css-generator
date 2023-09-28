@@ -11,6 +11,7 @@ const ListItem = ({
 }: any) => {
   const handleEditClick = (item: any) => {
     setEditData(item);
+  
   };
   const displayProperties = formData.id === shadow.id ? formData : shadow;
 
@@ -59,9 +60,7 @@ const ListItem = ({
       onDrop={onDrop}
       onClick={() => handleEditClick(shadow)}
       className={`flex justify-between p-3 cursor-move ${
-        formData.id === shadow.id
-          ? "bg-[#404da0] text-[#fff]"
-          : "bg-[#f0f0f0] text-[#000]"
+        formData.id === shadow.id ? "bg-[#404da0] text-[#fff]" : "bg-[#f0f0f0] text-[#000]"
       } mb-3 `}
     >
       <div className="flex gap-4">
