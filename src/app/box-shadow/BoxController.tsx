@@ -15,9 +15,11 @@ export interface updateShadow {
   setData: React.Dispatch<React.SetStateAction<BoxShadow[]>>
 }
 const BoxController = ({ setShadows, data, setData }: updateShadow) => {
+  console.log("🚀 ~ file: BoxController.tsx:18 ~ BoxController ~ data:", data)
   const [editData, setEditData] = useState<any>();
   const [formData, setFormData] = useState(data[0]);
-
+  const [count, setCount] = useState(data.length);
+  console.log("🚀 ~ file: BoxController.tsx:22 ~ BoxController ~ count:", count)
 
   useEffect(() => { 
 
@@ -56,7 +58,7 @@ const BoxController = ({ setShadows, data, setData }: updateShadow) => {
   }, [data, formData]);
   
 
-  const [count, setCount] = useState(1);
+
   const handleChange = (e: any) => {
     const { name, value, type, checked } = e.target;
     const updatedFormData = {
@@ -211,9 +213,9 @@ const BoxController = ({ setShadows, data, setData }: updateShadow) => {
           Add Layer
         </button>
         <div className="py-4">
-          {data.map((e: any) => (
+          {data.map((e: any,index:number) => (
             <ListItem
-              key={e.id}
+              key={index}
               shadow={e}
               formData={formData}
               data={data}

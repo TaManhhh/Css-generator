@@ -11,12 +11,10 @@ const ListItem = ({
 }: any) => {
   const handleEditClick = (item: any) => {
     setEditData(item);
-  
   };
-  const displayProperties = formData.id === shadow.id ? formData : shadow;
+  const displayProperties = formData?.id === shadow?.id ? formData : shadow;
 
   const [draggedItemIndex, setDraggedItemIndex] = useState<number | null>(null);
-
   const onDragStart = (e: React.DragEvent<HTMLDivElement>, index: number) => {
     e.dataTransfer.setData("text/plain", index.toString());
     setDraggedItemIndex(index);
@@ -44,23 +42,23 @@ const ListItem = ({
     setDraggedItemIndex(null);
   };
 
-  const onDelete = async (id: any) => {
+  const onDelete = (id: any) => {
     const Item = data.findIndex((e: any) => e.id === id);
-    if (Item !== 1) {
-      data.splice(Item, 1);
-    }
+    data.splice(Item, 1);
   };
   return (
     <div
       draggable
-      key={shadow.id}
-      onDragStart={(e) => onDragStart(e, shadow.id)}
-      onDragEnter={(e) => onDragEnter(e, shadow.id)}
+      key={shadow?.id}
+      onClick={() => handleEditClick(shadow)}
+      onDragStart={(e) => onDragStart(e, shadow?.id)}
+      onDragEnter={(e) => onDragEnter(e, shadow?.id)}
       onDragOver={onDragOver}
       onDrop={onDrop}
-      onClick={() => handleEditClick(shadow)}
       className={`flex justify-between p-3 cursor-move ${
-        formData.id === shadow.id ? "bg-[#404da0] text-[#fff]" : "bg-[#f0f0f0] text-[#000]"
+        formData?.id === shadow?.id
+          ? "bg-[#404da0] text-[#fff]"
+          : "bg-[#f0f0f0] text-[#000]"
       } mb-3 `}
     >
       <div className="flex gap-4">
@@ -69,10 +67,10 @@ const ListItem = ({
         </div>
         <div>
           {type === "box"
-            ? displayProperties.inset
-              ? `inset ${displayProperties.shiftRight}px ${displayProperties.shiftDown}px ${displayProperties.blur}px ${displayProperties.spread}px ${displayProperties.opacity}px ${displayProperties.color}`
-              : ` ${displayProperties.shiftRight}px ${displayProperties.shiftDown}px ${displayProperties.blur}px ${displayProperties.spread}px ${displayProperties.opacity}px ${displayProperties.color}`
-            : `${displayProperties.shiftRight}px ${displayProperties.shiftDown}px ${displayProperties.blur}px ${displayProperties.opacity}px ${displayProperties.color}`}
+            ? displayProperties?.inset
+              ? `inset ${displayProperties?.shiftRight}px ${displayProperties?.shiftDown}px ${displayProperties?.blur}px ${displayProperties?.spread}px ${displayProperties?.opacity}px ${displayProperties?.color}`
+              : ` ${displayProperties?.shiftRight}px ${displayProperties?.shiftDown}px ${displayProperties?.blur}px ${displayProperties?.spread}px ${displayProperties?.opacity}px ${displayProperties?.color}`
+            : `${displayProperties?.shiftRight}px ${displayProperties?.shiftDown}px ${displayProperties?.blur}px ${displayProperties?.opacity}px ${displayProperties?.color}`}
         </div>
       </div>
       <div className="gap-2 flex">

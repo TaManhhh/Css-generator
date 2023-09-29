@@ -21,7 +21,6 @@ export default function RootLayout({
         <div className="mb-[30px]">
             <Header />
         </div>
-      
         {children}
       </body>
     </html>
