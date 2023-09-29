@@ -15,11 +15,9 @@ export interface updateShadow {
   setData: React.Dispatch<React.SetStateAction<BoxShadow[]>>
 }
 const BoxController = ({ setShadows, data, setData }: updateShadow) => {
-  console.log("🚀 ~ file: BoxController.tsx:18 ~ BoxController ~ data:", data)
   const [editData, setEditData] = useState<any>();
   const [formData, setFormData] = useState(data[0]);
   const [count, setCount] = useState(data.length);
-  console.log("🚀 ~ file: BoxController.tsx:22 ~ BoxController ~ count:", count)
 
   useEffect(() => { 
 

@@ -42,9 +42,9 @@ const ListItem = ({
     setDraggedItemIndex(null);
   };
 
-  const onDelete = (id: any) => {
-    const Item = data.findIndex((e: any) => e.id === id);
-    data.splice(Item, 1);
+  const onDelete = (id: number) => {
+    const updatedData = data.filter((item: any) => item.id !== id);
+    setData(updatedData);
   };
   return (
     <div
