@@ -168,7 +168,7 @@ const TextController = ({ setShadows, data, setData }: any) => {
           Add Layer
         </button>
         <div className="py-4">
-          {data.map((e: any) => (
+          {data.map((e: any , index:number) => (
             <ListItem
               key={e.id}
               shadow={e}
@@ -177,6 +177,7 @@ const TextController = ({ setShadows, data, setData }: any) => {
               setData={setData}
               setEditData={setEditData}
               type="text"
+              index={index}
             />
           ))}
         </div>

@@ -7,7 +7,7 @@ const ListItem = ({
   setEditData,
   data,
   setData,
-  type,
+  type,index
 }: any) => {
   const handleEditClick = (item: any) => {
     setEditData(item);
@@ -51,8 +51,8 @@ const ListItem = ({
       draggable
       key={shadow?.id}
       onClick={() => handleEditClick(shadow)}
-      onDragStart={(e) => onDragStart(e, shadow?.id)}
-      onDragEnter={(e) => onDragEnter(e, shadow?.id)}
+      onDragStart={(e) => onDragStart(e, index)}
+      onDragEnter={(e) => onDragEnter(e, index)}
       onDragOver={onDragOver}
       onDrop={onDrop}
       className={`flex justify-between p-3 cursor-move ${

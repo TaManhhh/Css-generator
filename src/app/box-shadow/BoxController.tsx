@@ -220,7 +220,7 @@ const BoxController = ({ setShadows, data, setData }: updateShadow) => {
               setData={setData}
               setEditData={setEditData}
               type="box"
-            
+            index={index}
             />
           ))}
         </div>
